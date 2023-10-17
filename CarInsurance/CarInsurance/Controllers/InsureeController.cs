@@ -13,6 +13,10 @@ namespace CarInsurance.Controllers
     public class InsureeController : Controller
     {
         private InsuranceEntities db = new InsuranceEntities();
+        public ActionResult Admin()
+        {
+            return View(db.Insurees.ToList());
+        }
 
         // GET: Insuree
         public ActionResult Index()
@@ -56,6 +60,43 @@ namespace CarInsurance.Controllers
                 if (DateTime.Now.Year - insuree.DateofBirth.Year <= 18)
                 {
                     insuree.Quote += 100;
+                }
+                if (DateTime.Now.Year - insuree.DateofBirth.Year >= 19 && DateTime.Now.Year - insuree.DateofBirth.Year <= 25)
+                {
+                    insuree.Quote += 50;
+                }
+                if (DateTime.Now.Year - insuree.DateofBirth.Year >= 26)
+                {
+                    insuree.Quote += 50;
+                }
+                if (insuree.CarYear < 2000)
+                {
+                    insuree.Quote += 25;
+                }
+                if (insuree.CarYear > 2015)
+                {
+                    insuree.Quote += 25;
+                }
+                if (insuree.CarMake == "Porsche")
+                {
+                    insuree.Quote += 25;
+                    if (insuree.CarModel == "911 Carrera")
+                    {
+                        insuree.Quote += 25;
+                    }
+
+                }
+                if (insuree.SpeedingTickets < 0)
+                {
+                    insuree.Quote += insuree.SpeedingTickets * 10;
+                }
+                if (insuree.DUI)
+                {
+                    insuree.Quote *= 1.25m;
+                }
+                if (insuree.CoverageType)
+                {
+                    insuree.Quote *= 1.5m;
                 }
 
                 db.Insurees.Add(insuree);
